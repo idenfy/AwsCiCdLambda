@@ -3,7 +3,7 @@ from typing import Any, Dict, Optional
 from aws_cdk import core
 from aws_cdk.aws_codecommit import Repository
 from aws_cdk.aws_iam import Role, PolicyStatement, PolicyDocument, Effect, ServicePrincipal
-from aws_cdk.custom_resources import AwsCustomResource
+from aws_cdk.custom_resources import AwsCustomResource, PhysicalResourceId
 
 
 class InitialCommit:
@@ -119,7 +119,7 @@ class InitialCommit:
                         },
                     ]
                 },
-                "physical_resource_id": self.__prefix + 'CreateCommit',
+                "physical_resource_id": PhysicalResourceId.of(self.__prefix + 'CreateCommit'),
             }
 
     def __on_update(self) -> Optional[Dict[Any, Any]]:
