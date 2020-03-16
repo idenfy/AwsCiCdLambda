@@ -25,7 +25,7 @@ This project utilizes the following technology:
 This library project assumes the following:
 
 - You have knowledge in AWS (Amazon Web Services).
-- You have knowledge in AWS CloudFormation and AWS loadbalancing.
+- You have knowledge in AWS CloudFormation.
 - You are managing your infrastructure with AWS CDK.
 - You are writing AWS CDK templates with a python language.
 
@@ -35,6 +35,12 @@ The project is built and uploaded to PyPi. Install it by using pip.
 
 ```bash
 pip install aws-lambda-pipeline
+```
+
+Or directly install it through source.
+
+```bash
+./build.sh -ic
 ```
 
 ### Description
@@ -51,8 +57,12 @@ The pipeline takes your source code from CodeCommit and deploys it to Lambda.
 - Create a full infrastructure around AWS Lambda by using the following code below in your stack.
 
 ```python
-from aws_lambda_pipeline.lambda_pipeline import LambdaPipeline
+from aws_ci_cd_lambda.parameters.pipeline_parameters import PipelineParameters
+from aws_ci_cd_lambda.parameters.lambda_parameters import LambdaParameters
+from aws_ci_cd_lambda.parameters.vpc_parameters import VpcParameters
+from aws_ci_cd_lambda.ci_cd_lambda import CiCdLambda
 from aws_cdk import core, aws_ec2, aws_iam
+from aws_cdk.aws_lambda import Runtime
 
 class MainStack(core.Stack):
     def __init__(self, scope: core.App) -> None:
@@ -70,19 +80,31 @@ class MainStack(core.Stack):
         # Create a security group for your function.
         sg = aws_ec2.SecurityGroup(...)
         
-        self.pipeline = LambdaPipeline(
-            scope=self,
-            prefix='MyCool',
+        vpc_params = VpcParameters(
             vpc=vpc,
             subnets=vpc.isolated_subnets,
             security_groups=[sg],
+        )
+
+        lambda_params = LambdaParameters(
             execution_role=role,
             lambda_memory=1024,
             lambda_timeout=60,
+            lambda_runtime=Runtime.PYTHON_3_6,
             lambda_handler='manage.runner',
-            bucket_name='MyCoolBucket',
+        )
+
+        pipeline_params = PipelineParameters(
             secret_id='MyCoolSecret',
             secret_arn='arn:aws:secretsmanager:region:account_id:secret:MyCoolSecret-rAnDomStrinG'
+        )   
+
+        self.ci_cd_lambda = CiCdLambda(
+            scope=self,
+            prefix='MyCool',
+            vpc_params=vpc_params,
+            lambda_params=lambda_params,
+            pipeline_params=pipeline_params
         )
 ```
 
