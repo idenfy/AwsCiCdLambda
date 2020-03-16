@@ -35,7 +35,7 @@ class InitialCommit:
         """
         return AwsCustomResource(
             self.__stack,
-            self.__prefix + "CustomDeploymentResource",
+            self.__prefix + "CiCdLambdaCustomDeploymentResource",
             on_create=self.__on_create(),
             on_update=self.__on_update(),
             on_delete=self.__on_delete(),
@@ -50,9 +50,9 @@ class InitialCommit:
         """
         return Role(
             self.__stack,
-            self.__prefix + 'CustomDeploymentRole',
+            self.__prefix + 'CiCdLambdaCustomDeploymentRole',
             inline_policies={
-                self.__prefix + 'CustomDeploymentPolicy': PolicyDocument(
+                self.__prefix + 'CiCdLambdaCustomDeploymentPolicy': PolicyDocument(
                     statements=[
                         PolicyStatement(
                             actions=[
@@ -92,7 +92,7 @@ class InitialCommit:
         """
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        path = os.path.join(dir_path, 'files')
+        path = os.path.join(dir_path, '../files')
 
         return {
                 "service": 'CodeCommit',
@@ -119,7 +119,7 @@ class InitialCommit:
                         },
                     ]
                 },
-                "physical_resource_id": PhysicalResourceId.of(self.__prefix + 'CreateCommit'),
+                "physical_resource_id": PhysicalResourceId.of(self.__prefix + 'CiCdLambdaCreateCommit'),
             }
 
     def __on_update(self) -> Optional[Dict[Any, Any]]:

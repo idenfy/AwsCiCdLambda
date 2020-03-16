@@ -1,3 +1,3 @@
 include *.txt
-recursive-include lambda_package *.py
-recursive-include lambda_package *.sh
+recursive-include aws_ci_cd_lambda *.py
+recursive-include aws_ci_cd_lambda *.sh
