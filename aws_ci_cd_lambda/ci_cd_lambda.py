@@ -62,7 +62,7 @@ class CiCdLambda:
         )
 
         # Convert bucket name to an S3 friendly one.
-        bucket_name = self.__convert(pipeline_params.bucket_name)
+        bucket_name = self.__convert(prefix + 'CiCdLambdaArtifactsBucket')
 
         self.bucket = EmptyS3Bucket(
             scope, prefix + 'CiCdLambdaDeploymentBucket',

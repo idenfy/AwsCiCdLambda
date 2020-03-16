@@ -95,7 +95,6 @@ class MainStack(core.Stack):
         )
 
         pipeline_params = PipelineParameters(
-            bucket_name='MyCoolBucket',
             secret_id='MyCoolSecret',
             secret_arn='arn:aws:secretsmanager:region:account_id:secret:MyCoolSecret-rAnDomStrinG'
         )   
