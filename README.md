@@ -50,14 +50,12 @@ for a complete out-of-the-box hosting infrastructure.
 
 The pipeline takes your source code from CodeCommit and deploys it to Lambda.
 
-### Examples
-
-##### Complete tutorial
+### Tutorial
 
 - Create a full infrastructure around AWS Lambda by using the following code below in your stack.
 
 ```python
-from aws_ci_cd_lambda.parameters.pipeline_parameters import PipelineParameters
+from aws_ci_cd_lambda.parameters.ssh_parameters import SshParameters
 from aws_ci_cd_lambda.parameters.lambda_parameters import LambdaParameters
 from aws_ci_cd_lambda.parameters.vpc_parameters import VpcParameters
 from aws_ci_cd_lambda.ci_cd_lambda import CiCdLambda
@@ -94,7 +92,7 @@ class MainStack(core.Stack):
             lambda_handler='manage.runner',
         )
 
-        pipeline_params = PipelineParameters(
+        pipeline_params = SshParameters(
             secret_id='MyCoolSecret',
             secret_arn='arn:aws:secretsmanager:region:account_id:secret:MyCoolSecret-rAnDomStrinG'
         )   
@@ -104,7 +102,7 @@ class MainStack(core.Stack):
             prefix='MyCool',
             vpc_params=vpc_params,
             lambda_params=lambda_params,
-            pipeline_params=pipeline_params
+            ssh_params=pipeline_params
         )
 ```
 

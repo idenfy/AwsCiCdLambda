@@ -3,19 +3,25 @@ from aws_cdk.aws_s3 import Bucket
 
 
 class BuildSpecObject:
-    def __init__(self, prefix: str, bucket: Bucket, secret_id: Optional[str] = None, private_key: Optional[str] = None):
-        assert secret_id is None or private_key is None, 'Both secret id and private key cannot be set.'
+    def __init__(
+            self,
+            prefix: str,
+            bucket: Bucket,
+            aws_secret_id: Optional[str] = None,
+            ssh_key: Optional[str] = None
+    ) -> None:
+        assert aws_secret_id is None or ssh_key is None, 'Both aws secret id and ssh key cannot be set. Choose one.'
+
         self.__prefix = prefix
         self.__bucket = bucket
-        self.__secret_id = secret_id
-        self.__private_key = private_key
+        self.__aws_secret_id = aws_secret_id
+        self.__private_key = ssh_key
 
     def get_object(self):
-
-        if self.__secret_id is not None:
+        if self.__aws_secret_id is not None:
             install_ssh_commands = [
                 'apt install jq',
-                '{ aws secretsmanager get-secret-value --secret-id ' + self.__secret_id +
+                '{ aws secretsmanager get-secret-value --secret-id ' + self.__aws_secret_id +
                 '| jq --raw-output \'.SecretString\' > id_rsa;'
                 'eval `ssh-agent`; mv id_rsa ~/.ssh;'
                 'chmod 0600 ~/.ssh/id_rsa;'

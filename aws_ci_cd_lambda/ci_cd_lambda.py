@@ -1,6 +1,6 @@
 import re
 
-from aws_ci_cd_lambda.parameters.pipeline_parameters import PipelineParameters
+from aws_ci_cd_lambda.parameters.ssh_parameters import SshParameters
 from aws_ci_cd_lambda.parameters.lambda_parameters import LambdaParameters
 from aws_ci_cd_lambda.parameters.vpc_parameters import VpcParameters
 from aws_ci_cd_lambda.custom.initial_commit import InitialCommit
@@ -23,7 +23,7 @@ class CiCdLambda:
             self,
             scope: core.Stack,
             prefix: str,
-            pipeline_params: PipelineParameters,
+            ssh_params: SshParameters,
             lambda_params: LambdaParameters,
             vpc_params: VpcParameters
     ):
@@ -32,7 +32,7 @@ class CiCdLambda:
 
         :param scope: A scope in which resources shall be created.
         :param prefix: Prefix for all of your resource IDs and names.
-        :param pipeline_params: Parameters, focused on your deployment pipeline.
+        :param ssh_params: Parameters, letting you supply ssh key for accessing remote repositories.
         :param lambda_params: Parameters, focusing on the Lambda function itself.
         :param vpc_params: Parameters, focused on Virtual Private Cloud settings.
         """
@@ -70,7 +70,7 @@ class CiCdLambda:
         )
 
         # Create a BuildSpec object for CodeBuild
-        self.buildspec = BuildSpecObject(prefix, self.bucket, pipeline_params.secret_id, pipeline_params.private_key)
+        self.buildspec = BuildSpecObject(prefix, self.bucket, ssh_params.secret_id, ssh_params.private_key)
 
         # CodeBuild project, that installs functions dependencies, runs tests and deploys it to Lambda.
         self.code_build_project = aws_codebuild.PipelineProject(
@@ -95,13 +95,13 @@ class CiCdLambda:
         )
 
         # If a secret is provided, we allow CodeBuild to read it.
-        if pipeline_params.secret_arn is not None:
+        if ssh_params.secret_arn is not None:
             self.code_build_project.role.add_to_policy(
                 statement=aws_iam.PolicyStatement(
                     actions=[
                         'secretsmanager:GetSecretValue'
                     ],
-                    resources=[pipeline_params.secret_arn],
+                    resources=[ssh_params.secret_arn],
                     effect=aws_iam.Effect.ALLOW)
             )
 

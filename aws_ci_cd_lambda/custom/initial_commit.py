@@ -1,4 +1,5 @@
 import os
+
 from typing import Any, Dict, Optional
 from aws_cdk import core
 from aws_cdk.aws_codecommit import Repository
@@ -21,7 +22,7 @@ class InitialCommit:
 
         :param stack: A CloudFormation stack to which add this resource.
         :param prefix: Prefix for resource names.
-        :param code_repository: A codecommit git repository to push configuration files for ecs deployment.
+        :param code_repository: A codecommit git repository to create commits for.
         """
         self.__stack = stack
         self.__prefix = prefix
@@ -29,13 +30,13 @@ class InitialCommit:
 
     def get_resource(self):
         """
-        Creates a custom resource to manage an ecs deployment configuration.
+        Creates a custom resource to create commits to codecommit.
 
-        :return: Custom resource to manage an ecs deployment configuration.
+        :return: Custom resource to create commits to codecommit.
         """
         return AwsCustomResource(
             self.__stack,
-            self.__prefix + "CiCdLambdaCustomDeploymentResource",
+            self.__prefix + "CiCdLambdaCustomCommitResource",
             on_create=self.__on_create(),
             on_update=self.__on_update(),
             on_delete=self.__on_delete(),
@@ -44,15 +45,15 @@ class InitialCommit:
 
     def __role(self) -> Role:
         """
-        A role for custom resource which manages ecs deployment configuration.
+        A role for custom resource which manages git commits to codecommit.
 
         :return: Custom resource's role.
         """
         return Role(
             self.__stack,
-            self.__prefix + 'CiCdLambdaCustomDeploymentRole',
+            self.__prefix + 'CiCdLambdaCustomCommitRole',
             inline_policies={
-                self.__prefix + 'CiCdLambdaCustomDeploymentPolicy': PolicyDocument(
+                self.__prefix + 'CiCdLambdaCustomCommitPolicy': PolicyDocument(
                     statements=[
                         PolicyStatement(
                             actions=[
@@ -95,7 +96,7 @@ class InitialCommit:
         path = os.path.join(dir_path, '../files')
 
         return {
-                "service": 'CodeCommit',
+                "service": self.service_name(),
                 "action": "createCommit",
                 "parameters": {
                     'branchName': 'master',
