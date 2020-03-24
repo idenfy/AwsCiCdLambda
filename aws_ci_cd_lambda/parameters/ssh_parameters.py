@@ -19,7 +19,7 @@ class SshParameters:
         :param ssh_key: A direct supply of an ssh key without needing to retrieve it from anywhere else.
         """
         message = 'Only one way of retrieving SSH key is allowed.'
-        assert sum([arg is not None for arg in [aws_secret, ssh_key]]) == 1, message
+        assert sum([arg is not None for arg in [aws_secret, ssh_key]]) in [1, 0], message
 
         self.secret_id = None
         self.secret_arn = None
