@@ -1,5 +1,7 @@
+from typing import Dict, Any, Optional
 from aws_cdk.aws_iam import Role
 from aws_cdk.aws_lambda import Runtime
+from aws_cdk.aws_sns import ITopic
 
 
 class LambdaParameters:
@@ -13,6 +15,8 @@ class LambdaParameters:
             lambda_timeout: int,
             lambda_handler: str,
             lambda_runtime: Runtime,
+            environment: Optional[Dict[Any, Any]] = None,
+            alarms_sns_topic: Optional[ITopic] = None
     ) -> None:
         """
         Constructor.
@@ -28,3 +32,5 @@ class LambdaParameters:
         self.lambda_timeout = lambda_timeout
         self.lambda_handler = lambda_handler
         self.lambda_runtime = lambda_runtime
+        self.environment: Dict[Any, Any] = environment or {}
+        self.alarms_sns_topic = alarms_sns_topic

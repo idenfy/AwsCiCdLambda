@@ -1,5 +1,6 @@
 import re
 
+from aws_ci_cd_lambda.lambda_alarms import LambdaAlarms
 from aws_ci_cd_lambda.parameters.ssh_parameters import SshParameters
 from aws_ci_cd_lambda.parameters.lambda_parameters import LambdaParameters
 from aws_ci_cd_lambda.parameters.vpc_parameters import VpcParameters
@@ -52,14 +53,23 @@ class CiCdLambda:
             ),
             handler=lambda_params.lambda_handler,
             runtime=lambda_params.lambda_runtime,
+            description=f'Lambda function {prefix}.',
+            environment=lambda_params.environment,
             function_name=prefix,
             memory_size=lambda_params.lambda_memory,
+            reserved_concurrent_executions=5,
             role=lambda_params.execution_role,
             security_groups=vpc_params.security_groups,
             timeout=core.Duration.seconds(lambda_params.lambda_timeout),
             vpc=vpc_params.vpc,
             vpc_subnets=aws_ec2.SubnetSelection(subnets=vpc_params.subnets)
         )
+
+        # Create alarms for the function.
+        if lambda_params.alarms_sns_topic:
+            self.alarms = LambdaAlarms(scope, prefix, lambda_params.alarms_sns_topic, self.function)
+        else:
+            self.alarms = None
 
         # Convert bucket name to an S3 friendly one.
         bucket_name = self.__convert(prefix + 'CiCdLambdaArtifactsBucket')

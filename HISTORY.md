@@ -1,5 +1,9 @@
 # Release history
 
+#### 2.1.0
+Add error and throttles alarms. Add ability to specify lambda environment.
+Add reserved concurrent executions.
+
 #### 2.0.1
 Bug fix.
 
