@@ -1,5 +1,8 @@
 # Release history
 
+#### 2.2.0
+Add ability to specify arguments for install and test scripts.
+
 #### 2.1.0
 Add error and throttles alarms. Add ability to specify lambda environment.
 Add reserved concurrent executions.
