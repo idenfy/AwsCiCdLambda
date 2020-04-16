@@ -122,6 +122,18 @@ class CiCdLambda:
                     effect=aws_iam.Effect.ALLOW)
             )
 
+        # If KMS key is provided, we allow CodeBuild to decrypt using it.
+        if pipeline_params.kms_key_arn is not None:
+            self.code_build_project.role.add_to_policy(
+                statement=aws_iam.PolicyStatement(
+                    actions=[
+                        "kms:Decrypt"
+                    ],
+                    effect=aws_iam.Effect.ALLOW,
+                    resources=[pipeline_params.kms_key_arn]
+                )
+            )
+
         # Push hte initial commit to CodeCommit.
         self.initial_commit = InitialCommit(
             scope, prefix, self.project_repository
