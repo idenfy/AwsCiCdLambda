@@ -83,8 +83,8 @@ class CiCdLambda:
         self.buildspec = BuildSpecObject(
             prefix,
             self.bucket,
-            pipeline_params.secret_id,
-            pipeline_params.private_key,
+            pipeline_params.ssh_params.secret_id,
+            pipeline_params.ssh_params.private_key,
             pipeline_params.install_args,
             pipeline_params.test_args
         )
@@ -112,25 +112,25 @@ class CiCdLambda:
         )
 
         # If a secret is provided, we allow CodeBuild to read it.
-        if pipeline_params.secret_arn is not None:
+        if pipeline_params.ssh_params.secret_arn is not None:
             self.code_build_project.role.add_to_policy(
                 statement=aws_iam.PolicyStatement(
                     actions=[
                         'secretsmanager:GetSecretValue'
                     ],
-                    resources=[pipeline_params.secret_arn],
+                    resources=[pipeline_params.ssh_params.secret_arn],
                     effect=aws_iam.Effect.ALLOW)
             )
 
         # If KMS key is provided, we allow CodeBuild to decrypt using it.
-        if pipeline_params.kms_key_arn is not None:
+        if pipeline_params.ssh_params.kms_key_arn is not None:
             self.code_build_project.role.add_to_policy(
                 statement=aws_iam.PolicyStatement(
                     actions=[
                         "kms:Decrypt"
                     ],
                     effect=aws_iam.Effect.ALLOW,
-                    resources=[pipeline_params.kms_key_arn]
+                    resources=[pipeline_params.ssh_params.kms_key_arn]
                 )
             )
 
