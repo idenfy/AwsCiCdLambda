@@ -36,7 +36,10 @@ class PipelineParameters:
 
         self.private_key = ssh_key
 
+<<<<<<< HEAD:aws_ci_cd_lambda/parameters/pipeline_parameters.py
         self.kms_key_arn = kms_key_arn
 
+=======
+>>>>>>> 1bd0bb265eb0ba221f77b504dc36c5c719f7e0dd:aws_ci_cd_lambda/parameters/pipeline_parameters.py
         self.install_args = install_args
         self.test_args = test_args
