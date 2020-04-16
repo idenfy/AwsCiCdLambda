@@ -1,5 +1,11 @@
 # Release history
 
+#### 3.0.0
+Moved SSH parameters to a separate class.
+
+#### 2.3.0
+Add ability to specify KMS key for secret decryption.
+
 #### 2.2.0
 Add ability to specify arguments for install and test scripts.
 

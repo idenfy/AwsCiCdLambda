@@ -56,6 +56,7 @@ The pipeline takes your source code from CodeCommit and deploys it to Lambda.
 
 ```python
 from aws_ci_cd_lambda.parameters.pipeline_parameters import PipelineParameters
+from aws_ci_cd_lambda.parameters.ssh_parameters import SshParameters
 from aws_ci_cd_lambda.parameters.lambda_parameters import LambdaParameters
 from aws_ci_cd_lambda.parameters.vpc_parameters import VpcParameters
 from aws_ci_cd_lambda.ci_cd_lambda import CiCdLambda
@@ -93,8 +94,13 @@ class MainStack(core.Stack):
         )
 
         pipeline_params = PipelineParameters(
-            secret_id='MyCoolSecret',
-            secret_arn='arn:aws:secretsmanager:region:account_id:secret:MyCoolSecret-rAnDomStrinG'
+            ssh_params=SshParameters(
+                aws_secret=(
+                    'MyCoolSecret',
+                    'arn:aws:secretsmanager:region:account_id:secret:MyCoolSecret-rAnDomStrinG',
+                    None
+                )
+            )
         )   
 
         self.ci_cd_lambda = CiCdLambda(
