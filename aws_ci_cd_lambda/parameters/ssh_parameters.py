@@ -26,6 +26,7 @@ class SshParameters:
 
         self.secret_id = None
         self.secret_arn = None
+        self.kms_key_arn = None
 
         if aws_secret:
             self.secret_id, self.secret_arn, self.kms_key_arn = aws_secret
