@@ -1,5 +1,8 @@
 # Release history
 
+#### 3.0.1
+Bug fix.
+
 #### 3.0.0
 Moved SSH parameters to a separate class.
 
