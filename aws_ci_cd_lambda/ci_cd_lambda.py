@@ -86,7 +86,8 @@ class CiCdLambda:
             pipeline_params.ssh_params.secret_id,
             pipeline_params.ssh_params.private_key,
             pipeline_params.install_args,
-            pipeline_params.test_args
+            pipeline_params.test_args,
+            pipeline_params.custom_pre_build_commands
         )
 
         # CodeBuild project, that installs functions dependencies, runs tests and deploys it to Lambda.

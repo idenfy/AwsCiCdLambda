@@ -11,6 +11,7 @@ class BuildSpecObject:
             ssh_key: Optional[str] = None,
             install_args: Optional[List[str]] = None,
             test_args: Optional[List[str]] = None,
+            custom_pre_build_commands: Optional[List[str]] = None
     ) -> None:
         assert aws_secret_id is None or ssh_key is None, 'Both aws secret id and ssh key cannot be set. Choose one.'
 
@@ -20,6 +21,7 @@ class BuildSpecObject:
         self.__private_key = ssh_key
         self.__install_args = install_args or []
         self.__test_args = test_args or []
+        self.__custom_pre_build_commands = custom_pre_build_commands or []
 
     def get_object(self):
         if self.__aws_secret_id is not None:
@@ -55,7 +57,7 @@ class BuildSpecObject:
                     ]
                 },
                 'pre_build': {
-                    'commands': [
+                    'commands': self.__custom_pre_build_commands + [
                         'chmod +x test.sh',
                         ' '.join(['./test.sh'] + self.__test_args)
                     ]
