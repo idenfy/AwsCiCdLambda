@@ -71,7 +71,7 @@ class BuildSpecObject:
                         'cp -R $VENV_PATH/lib/python3.6/site-packages/. .',
                         'current_dir=$( pwd )',
                         'cd $INSTALL_PATH',
-                        'zip -9 -r $BUILD_PATH *',
+                        'zip -9 -r $BUILD_PATH .',
                         'cd $current_dir',
                         f'KEY={self.__prefix}',
                         f'aws s3 cp $BUILD_PATH s3://{self.__bucket.bucket_name}/"$KEY".zip',
