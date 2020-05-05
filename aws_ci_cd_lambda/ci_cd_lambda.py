@@ -86,7 +86,8 @@ class CiCdLambda:
             pipeline_params.ssh_params.secret_id,
             pipeline_params.ssh_params.private_key,
             pipeline_params.install_args,
-            pipeline_params.test_args
+            pipeline_params.test_args,
+            pipeline_params.custom_pre_build_commands
         )
 
         # CodeBuild project, that installs functions dependencies, runs tests and deploys it to Lambda.
@@ -95,7 +96,8 @@ class CiCdLambda:
             project_name=prefix + 'CiCdLambdaCodeBuildProject',
             environment=aws_codebuild.BuildEnvironment(
                 build_image=aws_codebuild.LinuxBuildImage.STANDARD_3_0,
-                compute_type=aws_codebuild.ComputeType.SMALL
+                compute_type=aws_codebuild.ComputeType.SMALL,
+                privileged=True
             ),
             build_spec=aws_codebuild.BuildSpec.from_object(self.buildspec.get_object()),
         )

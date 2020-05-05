@@ -1,5 +1,8 @@
 # Release history
 
+#### 3.1.0
+Added the ability to add custom commands to buildspec.
+
 #### 3.0.1
 Bug fix.
 
