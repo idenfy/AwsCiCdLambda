@@ -7,7 +7,7 @@ with open('HISTORY.md') as history_file:
     HISTORY = history_file.read()
 setup(
     name='aws_ci_cd_lambda',
-    version='3.2.0',
+    version='3.3.0',
     license='GNU GENERAL PUBLIC LICENSE Version 3',
     packages=find_packages(exclude=['venv', 'test']),
     description=(
@@ -18,15 +18,15 @@ setup(
     include_package_data=True,
     install_requires=[
         # AWS CDK dependencies.
-        'aws_cdk.core>=1.44.0,<1.50.0',
-        'aws_cdk.aws_iam>=1.44.0,<1.50.0',
-        'aws_cdk.custom_resources>=1.44.0,<1.50.0',
-        'aws_cdk.aws_lambda>=1.44.0,<1.50.0',
-        'aws_cdk.aws_codecommit>=1.44.0,<1.50.0',
-        'aws_cdk.aws_codebuild>=1.44.0,<1.50.0',
-        'aws_cdk.aws_codepipeline>=1.44.0,<1.50.0',
-        'aws_cdk.aws_codepipeline_actions>=1.44.0,<1.50.0',
-        'aws_cdk.aws_ec2>=1.44.0,<1.50.0',
+        'aws_cdk.core>=1.60.0,<2.0.0',
+        'aws_cdk.aws_iam>=1.60.0,<2.0.0',
+        'aws_cdk.custom_resources>=1.60.0,<2.0.0',
+        'aws_cdk.aws_lambda>=1.60.0,<2.0.0',
+        'aws_cdk.aws_codecommit>=1.60.0,<2.0.0',
+        'aws_cdk.aws_codebuild>=1.60.0,<2.0.0',
+        'aws_cdk.aws_codepipeline>=1.60.0,<2.0.0',
+        'aws_cdk.aws_codepipeline_actions>=1.60.0,<2.0.0',
+        'aws_cdk.aws_ec2>=1.60.0,<2.0.0',
 
         # Other dependencies.
         'aws-empty-bucket>=2.0.0,<3.0.0'
